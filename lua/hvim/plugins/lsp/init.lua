@@ -40,7 +40,6 @@ return {
 					html = {},
 					jsonls = {},
 					jsonnet_ls = {},
-					nil_ls = {},
 					pyright = {
 						settings = {
 							pyright = { disableOrganizeImports = true },
