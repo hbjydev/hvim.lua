@@ -46,6 +46,7 @@ return {
 						},
 					},
 					ruff = {},
+					rust_analyzer = {},
 					terraformls = {},
 					volar = {},
 					yamlls = {},
