@@ -57,13 +57,16 @@ return {
 
 			completion = {
 				list = {
-					selection = "manual",
+					selection = {
+						preselect = false,
+						auto_insert = false,
+					},
 				},
 
 				menu = {
 					min_width = 40,
 					draw = {
-						treesitter = true,
+						treesitter = { "lsp" },
 						padding = 0,
 						columns = {
 							{ "kind_icon" },
