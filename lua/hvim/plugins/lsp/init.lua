@@ -8,6 +8,8 @@ return {
 		},
 
 		opts = function()
+			local nvim_lsp = require("lspconfig")
+
 			---@class PluginLspOpts
 			local ret = {
 				---@type vim.diagnostic.config()
@@ -34,9 +36,12 @@ return {
 
 				servers = {
 					cssls = {},
-					denols = {},
+					denols = {
+						settings = {
+							root_dir = nvim_lsp.util.root_pattern("deno.json", "deno.jsonc"),
+						},
+					},
 					dockerls = {},
-					-- gopls = {},
 					html = {},
 					jsonls = {},
 					jsonnet_ls = {},
@@ -48,10 +53,14 @@ return {
 					ruff = {},
 					rust_analyzer = {},
 					terraformls = {},
-					ts_ls = {},
+					ts_ls = {
+						settings = {
+							root_dir = nvim_lsp.util.root_pattern("package.json"),
+							single_file_support = false,
+						},
+					},
 					volar = {},
 					yamlls = {},
-					vtsls = {},
 
 					lua_ls = {
 						settings = {
