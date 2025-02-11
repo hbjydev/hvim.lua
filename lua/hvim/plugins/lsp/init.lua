@@ -8,8 +8,6 @@ return {
 		},
 
 		opts = function()
-			local nvim_lsp = require("lspconfig")
-
 			---@class PluginLspOpts
 			local ret = {
 				---@type vim.diagnostic.config()
@@ -36,11 +34,7 @@ return {
 
 				servers = {
 					cssls = {},
-					denols = {
-						settings = {
-							root_dir = nvim_lsp.util.root_pattern("deno.json", "deno.jsonc"),
-						},
-					},
+					-- denols = {},
 					dockerls = {},
 					html = {},
 					jsonls = {},
@@ -55,7 +49,6 @@ return {
 					terraformls = {},
 					ts_ls = {
 						settings = {
-							root_dir = nvim_lsp.util.root_pattern("package.json"),
 							single_file_support = false,
 						},
 					},
@@ -182,9 +175,9 @@ return {
 				})
 			end
 
-			if Hvim.lsp.is_enabled("denols") and Hvim.lsp.is_enabled("vtsls") then
+			if Hvim.lsp.is_enabled("denols") and Hvim.lsp.is_enabled("tsls") then
 				local is_deno = require("lspconfig.util").root_pattern("deno.json", "deno.jsonc")
-				Hvim.lsp.disable("vtsls", is_deno)
+				Hvim.lsp.disable("ts_ls", is_deno)
 				Hvim.lsp.disable("denols", function(root_dir, config)
 					if not is_deno(root_dir) then
 						config.settings.deno.enable = false
