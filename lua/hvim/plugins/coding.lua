@@ -78,8 +78,9 @@ return {
 
 			sources = {
 				default = { "lsp", "snippets" },
-				cmdline = {},
 			},
+
+			cmdline = { sources = {} },
 
 			signature = { enabled = true },
 		},
@@ -170,9 +171,9 @@ return {
 		},
 	},
 
-  {
-    "brenoprata10/nvim-highlight-colors",
-    event = "LazyFile",
-    opts = {},
-  }
+	{
+		"brenoprata10/nvim-highlight-colors",
+		event = "LazyFile",
+		opts = {},
+	},
 }
