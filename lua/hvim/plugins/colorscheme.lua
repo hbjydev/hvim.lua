@@ -2,10 +2,12 @@ return {
 	{
 		"nyoom-engineering/oxocarbon.nvim",
 		init = function()
-			vim.cmd.colorscheme("oxocarbon")
-		end,
-		config = function(_, _)
 			local oxc = require("oxocarbon").oxocarbon
+
+			-- Set the color scheme
+			vim.cmd.colorscheme("oxocarbon")
+
+			-- Set highlight overrides
 			vim.api.nvim_set_hl(0, "Normal", { bg = oxc.none })
 			vim.api.nvim_set_hl(0, "NormalNC", { bg = oxc.none })
 			vim.api.nvim_set_hl(0, "NormalFloat", { bg = oxc.none })

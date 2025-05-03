@@ -37,7 +37,9 @@ return {
 		},
 
 		opts = {
-			options = { globalstatus = true },
+			options = {
+				globalstatus = true,
+			},
 		},
 	},
 }
