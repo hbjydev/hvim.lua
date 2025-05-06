@@ -1,6 +1,7 @@
 return {
   {
     'stevearc/conform.nvim',
+    enabled = not Hvim.is_mini(),
     dependencies = { 'mason.nvim' },
     cmd = 'Format',
     keys = {
@@ -139,6 +140,7 @@ return {
   -- lazydev
   {
     'saghen/blink.cmp',
+    enabled = not Hvim.is_mini(),
     opts = {
       sources = {
         -- add lazydev to your completion providers
@@ -160,6 +162,7 @@ return {
 
   {
     'folke/lazydev.nvim',
+    enabled = not Hvim.is_mini(),
     ft = 'lua',
     cmd = 'LazyDev',
     opts = {
