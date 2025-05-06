@@ -19,6 +19,11 @@ function M.get_plugin(name)
   return require('lazy.core.config').spec.plugins[name]
 end
 
+function M.is_mini()
+  local config_dir = vim.fn.stdpath('config')
+  return vim.uv.fs_stat(config_dir .. "/mini")
+end
+
 ---@param name string
 function M.opts(name)
   local plugin = M.get_plugin(name)

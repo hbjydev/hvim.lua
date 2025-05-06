@@ -1,6 +1,7 @@
 return {
   {
     'neovim/nvim-lspconfig',
+    enabled = not Hvim.is_mini(),
     event = 'LazyFile',
     dependencies = {
       'mason.nvim',
@@ -190,6 +191,7 @@ return {
 
   {
     'williamboman/mason.nvim',
+    enabled = not Hvim.is_mini(),
     cmd = 'Mason',
     keys = {},
     build = ':MasonUpdate',

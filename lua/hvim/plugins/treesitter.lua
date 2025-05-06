@@ -1,6 +1,7 @@
 return {
   {
     'nvim-treesitter/nvim-treesitter',
+    enabled = not Hvim.is_mini(),
     version = false,
     build = ':TSUpdate',
     event = 'LazyFile',
