@@ -1,6 +1,7 @@
 return {
   {
     'folke/noice.nvim',
+    enabled = not Hvim.is_vscode(),
     opts = {
       lsp = {
         override = {

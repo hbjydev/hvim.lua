@@ -24,6 +24,10 @@ function M.is_mini()
   return vim.uv.fs_stat(config_dir .. "/mini")
 end
 
+function M.is_vscode()
+  return vim.g.vscode
+end
+
 ---@param name string
 function M.opts(name)
   local plugin = M.get_plugin(name)

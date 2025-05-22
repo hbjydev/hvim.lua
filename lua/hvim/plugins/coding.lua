@@ -1,7 +1,7 @@
 return {
   {
     'stevearc/conform.nvim',
-    enabled = not Hvim.is_mini(),
+    enabled = not Hvim.is_mini() and not Hvim.is_vscode(),
     dependencies = { 'mason.nvim' },
     cmd = 'Format',
     keys = {
@@ -42,6 +42,7 @@ return {
   {
     'saghen/blink.cmp',
     lazy = false, -- lazy loading handled internally
+    enabled = not Hvim.is_vscode(),
     dependencies = 'rafamadriz/friendly-snippets',
     version = 'v0.*',
 
@@ -140,7 +141,7 @@ return {
   -- lazydev
   {
     'saghen/blink.cmp',
-    enabled = not Hvim.is_mini(),
+    enabled = not Hvim.is_mini() and not Hvim.is_vscode(),
     opts = {
       sources = {
         -- add lazydev to your completion providers
@@ -162,7 +163,7 @@ return {
 
   {
     'folke/lazydev.nvim',
-    enabled = not Hvim.is_mini(),
+    enabled = not Hvim.is_mini() and not Hvim.is_vscode(),
     ft = 'lua',
     cmd = 'LazyDev',
     opts = {

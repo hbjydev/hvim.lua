@@ -36,6 +36,7 @@ return {
 
   {
     'nvim-telescope/telescope.nvim',
+    enabled = not Hvim.is_vscode(),
     dependencies = {
       'nvim-lua/plenary.nvim',
     },
