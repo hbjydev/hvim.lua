@@ -26,3 +26,15 @@ vim.keymap.set('n', '<C-k>', '<cmd>cnext<CR>zz')
 vim.keymap.set('n', '<C-j>', '<cmd>cprev<CR>zz')
 vim.keymap.set('n', '<leader>j', '<cmd>lnext<CR>zz')
 vim.keymap.set('n', '<leader>k', '<cmd>lprev<CR>zz')
+
+if vim.g.vscode then
+  local code = require('vscode')
+  local actionbind = function(mode, bind, action)
+    vim.keymap.set(mode, bind, function ()
+      code.action(action)
+    end)
+  end
+
+  actionbind('n', ']d', 'editor.action.marker.prev')
+  actionbind('n', ']d', 'editor.action.marker.next')
+end
