@@ -5,7 +5,7 @@ return {
     event = 'LazyFile',
     dependencies = {
       'mason.nvim',
-      { 'williamboman/mason-lspconfig.nvim', config = function() end },
+      { 'mason-org/mason-lspconfig.nvim', config = function() end },
     },
 
     opts = function()
@@ -190,7 +190,7 @@ return {
   },
 
   {
-    'williamboman/mason.nvim',
+    'mason-org/mason.nvim',
     enabled = not Hvim.is_mini() and not Hvim.is_vscode(),
     cmd = 'Mason',
     keys = {},
