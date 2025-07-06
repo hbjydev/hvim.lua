@@ -82,7 +82,7 @@ return {
         default = { 'lsp', 'snippets' },
       },
 
-      cmdline = { sources = {} },
+      cmdline = { enabled = false },
 
       signature = { enabled = true },
     },
