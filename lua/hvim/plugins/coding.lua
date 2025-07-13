@@ -180,4 +180,12 @@ return {
     event = 'LazyFile',
     opts = {},
   },
+
+  {
+    'code-biscuits/nvim-biscuits',
+    enabled = not Hvim.is_mini(),
+    dependencies = { 'nvim-treesitter/nvim-treesitter' },
+    event = 'LazyFile',
+    opts = {},
+  }
 }
