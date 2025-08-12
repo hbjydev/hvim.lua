@@ -95,6 +95,12 @@ return {
           'vendor',
         },
       },
+
+      pickers = {
+        find_files = {
+          find_command = { 'rg', '--files', '--hidden', '--glob', '!.git' },
+        },
+      }
     },
     config = function(_, opts)
       require('telescope').setup(opts)
