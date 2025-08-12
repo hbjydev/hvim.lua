@@ -2,14 +2,19 @@ return {
   {
     'zbirenbaum/copilot.lua',
     enabled = not Hvim.is_mini() and not Hvim.is_vscode(),
+    lazy = true,
     cmd = 'Copilot',
-    event = 'InsertEnter',
+    event = 'LazyFile',
     opts = {},
   },
 
   {
     'ravitemer/mcphub.nvim',
     enabled = not Hvim.is_mini() and not Hvim.is_vscode(),
+    lazy = true,
+    cmd = 'MCPHub',
+    event = 'LazyFile',
+    keys = {{ '<leader>am', ':MCPHub<CR>', desc = 'Open MCPHub' }},
     dependencies = { "nvim-lua/plenary.nvim" },
     build = 'bun install --global mcp-hub@latest',
     opts = {
@@ -28,9 +33,8 @@ return {
     "CopilotC-Nvim/CopilotChat.nvim",
     enabled = not Hvim.is_mini() and not Hvim.is_vscode(),
     build = "make tiktoken",
-    keys = {
-      { '<leader>cpc', ':CopilotChatToggle<CR>', desc = 'Toggle Copilot Chat' }
-    },
+    lazy = true,
+    keys = {{ '<leader>ac', ':CopilotChatToggle<CR>', desc = 'Copilot Chat' }},
     cmd = {
       "CopilotChat",
       "CopilotChatToggle",
