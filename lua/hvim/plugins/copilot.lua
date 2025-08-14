@@ -55,7 +55,7 @@ return {
       "nvim-telescope/telescope.nvim",
     },
     opts = {
-      model = 'gpt-4.1',
+      model = 'gpt-5',
       temperature = 0.5,
       window = {
         layout = 'float',
