@@ -40,6 +40,13 @@ return {
           html = {},
           jsonls = {},
           jsonnet_ls = {},
+          omnisharp = {
+            settings = {
+              formatting_options = {
+                enable_editorconfig_support = true,
+              }
+            }
+          },
           pyright = {
             settings = {
               pyright = { disableOrganizeImports = true },
