@@ -12,57 +12,63 @@ return {
       ---@class PluginLspOpts
       local ret = {
         ---@type vim.diagnostic.config()
-        diagnostics = {},
+        diagnostics = {
+          underline = true,
+          update_in_insert = false,
+          virtual_text = {
+            spacing = 4,
+            source = "if_many",
+            prefix = "icons"
+          },
+          severity_sort = true,
+        },
+
         inlay_hints = {
           enabled = true,
           exclude = { 'vue' },
         },
-        codelens = { enabled = true },
-        document_highlight = { enabled = true },
-        capabilities = {
-          workspace = {
-            fileOperations = {
-              didRename = true,
-              willRename = true,
-            },
-          },
-        },
+
+        codelens = { enabled = false },
+
+        folds = { enabled = true },
 
         format = {
           formatting_options = nil,
-          timeout_ms = nil,
+          timeout_ms = nil
         },
 
         servers = {
-          cssls = {},
-          -- denols = {},
-          dockerls = {},
-          html = {},
-          jsonls = {},
-          jsonnet_ls = {},
-          omnisharp = {
-            settings = {
-              formatting_options = {
-                enable_editorconfig_support = true,
-              }
-            }
-          },
-          pyright = {
-            settings = {
-              pyright = { disableOrganizeImports = true },
+          ["*"] = {
+            capabilities = {
+              workspace = {
+                fileOperations = {
+                  didRename = true,
+                  willRename = true,
+                },
+              },
             },
-          },
-          ruff = {},
-          rust_analyzer = {},
-          terraformls = {},
-          ts_ls = {
-            settings = {
-              single_file_support = false,
-            },
-          },
-          volar = {},
-          yamlls = {},
 
+            keys = {
+              -- Diagnostics
+              { '<leader>do', vim.diagnostic.open_float, desc = 'Show diagnostics' },
+              { '[d', vim.diagnostic.goto_prev, desc = 'Previous diagnostic' },
+              { ']d', vim.diagnostic.goto_next, desc = 'Next diagnostic' },
+
+              -- LSP Buffer
+              { '<leader>cl', function() Snacks.picker.lsp_config() end, desc = "LSP Info" },
+              { 'gd', vim.lsp.buf.definition, desc = "Go to [d]efinition", has = "definition" },
+              { 'gr', vim.lsp.buf.references, desc = "References", nowait = true },
+              { 'gt', vim.lsp.buf.type_definition, desc = "Go to [t]ype definition" },
+              { 'gD', vim.lsp.buf.declaration, desc = "Go to type [D]eclaration" },
+              { 'K', function() return vim.lsp.buf.hover() end, desc = 'Open hover dialog' },
+              { 'gK', function() return vim.lsp.buf.signature_help() end, desc = 'Signature help', has = 'signatureHelp' },
+              { '<c-k>', function() return vim.lsp.buf.signature_help() end, mode = 'i', desc = 'Signature help', has = 'signatureHelp' },
+              { '<leader>ca', vim.lsp.buf.code_action, desc = 'Code action', has = 'codeAction' },
+              { '<leader>rn', vim.lsp.buf.rename, desc = 'Rename', has = 'rename' },
+            },
+          },
+
+          stylua = { enabled = false },
           lua_ls = {
             settings = {
               Lua = {
@@ -73,21 +79,49 @@ return {
                   enable = true,
                 },
                 completion = {
-                  callSnippet = 'Replace',
+                  callSnippet = "Replace",
                 },
                 doc = {
-                  privateName = { '^_' },
+                  privateName = { "^_" },
                 },
                 hint = {
                   enable = true,
                   setType = false,
                   paramType = true,
-                  paramName = 'Disable',
-                  semicolon = 'Disable',
-                  arrayIndex = 'Disable',
+                  paramName = "Disable",
+                  semicolon = "Disable",
+                  arrayIndex = "Disable",
                 },
-              },
+              }
+            }
+          },
+
+          astro = {},
+          cssls = {},
+          dockerls = {},
+          html = {},
+          jsonls = {},
+          jsonnet_ls = {},
+          lua_ls = {},
+          pyright = {},
+          rust_analyzer = {},
+          terraform_ls = {},
+          ts_ls = {},
+          vue_ls = {},
+          yamlls = {},
+
+          omnisharp = {
+            cmd = {
+              vim.fn.executable("OmniSharp") and "OmniSharp" or "omnisharp",
+              "--languageserver",
+              "--hostPID",
+              tostring(vim.fn.getpid()),
             },
+            settings = {
+              formatting_options = {
+                enable_editorconfig_support = true,
+              }
+            }
           },
         },
 
@@ -97,13 +131,12 @@ return {
     end,
 
     ---@param opts PluginLspOpts
-    config = function(_, opts)
-      Hvim.lsp.on_attach(function(client, buffer)
-        require('hvim.plugins.lsp.keymaps').on_attach(client, buffer)
-      end)
-
-      Hvim.lsp.setup()
-      Hvim.lsp.on_dynamic_capability(require('hvim.plugins.lsp.keymaps').on_attach)
+    config = vim.schedule_wrap(function(_, opts)
+      for server, server_opts in pairs(opts.servers) do
+        if type(server_opts) == "table" and server_opts.keys then
+          require('hvim.plugins.lsp.keymaps').set({ name = server ~= "*" and server or nil }, server_opts.keys)
+        end
+      end
 
       -- inlay hints
       if opts.inlay_hints.enabled then
@@ -118,89 +151,68 @@ return {
         end)
       end
 
+      -- folds
+      if opts.folds.enabled then
+        Snacks.util.lsp.on({ method = "textDocument/foldingRange" }, function()
+          if Hvim.set_default("foldmethod", "expr") then
+            Hvim.set_default("foldexpr", "v:lua.vim.lsp.foldexpr()")
+          end
+        end)
+      end
+
+      -- diagnostics
       vim.diagnostic.config(vim.deepcopy(opts.diagnostics))
 
-      local servers = opts.servers
-      local has_blink, blink = pcall(require, 'blink.cmp')
-      local capabilities = vim.tbl_deep_extend(
-        'force',
-        {},
-        vim.lsp.protocol.make_client_capabilities(),
-        has_blink and blink.get_lsp_capabilities() or {},
-        opts.capabilities or {}
-      )
+      if opts.servers["*"] then
+        vim.lsp.config("*", opts.servers["*"])
+      end
 
-      local function setup(server)
-        local server_opts = vim.tbl_deep_extend('force', {
-          capabilities = vim.deepcopy(capabilities),
-        }, servers[server] or {})
-        if server_opts.enabled == false then
+      local have_mason = Hvim.has("mason-lspconfig.nvim")
+      local mason_all = have_mason
+        and vim.tbl_keys(require("mason-lspconfig.mappings").get_mason_map().lspconfig_to_package)
+        or {} --[[ @as string[] ]]
+      local mason_exclude = {} ---@type string[]
+
+      local function configure(server)
+        if server == "*" then
+          return false
+        end
+        local sopts = opts.servers[server]
+        sopts = sopts == true and {} or (not sopts) and { enabled = false } or sopts
+
+        if sopts.enabled == false then
+          mason_exclude[#mason_exclude + 1] = server
           return
         end
 
-        if opts.setup[server] then
-          if opts.setup[server](server, server_opts) then
-            return
-          end
-        elseif opts.setup['*'] then
-          if opts.setup['*'](server, server_opts) then
-            return
-          end
-        end
-        vim.lsp.config(server, server_opts)
-      end
-
-      -- get all the servers that are available through mason-lspconfig
-      local have_mason, mlsp = pcall(require, 'mason-lspconfig')
-      local all_mslp_servers = {}
-      if have_mason then
-        all_mslp_servers = vim.tbl_keys(require('mason-lspconfig.mappings.server').lspconfig_to_package)
-      end
-
-      local ensure_installed = {} ---@type string[]
-      for server, server_opts in pairs(servers) do
-        if server_opts then
-          server_opts = server_opts == true and {} or server_opts
-          if server_opts.enabled ~= false then
-            -- run manual setup if mason=false or if this is a server that cannot be installed with mason-lspconfig
-            if server_opts.mason == false or not vim.tbl_contains(all_mslp_servers, server) then
-              setup(server)
-            else
-              ensure_installed[#ensure_installed + 1] = server
-            end
+        local use_mason = sopts.mason ~= false and vim.tbl_contains(mason_all, server)
+        local setup = opts.setup[server] or opts.setup["*"]
+        if setup and setup(server, opts) then
+          mason_exclude[#mason_exclude + 1] = server
+        else
+          vim.lsp.config(server, sops)
+          if not use_mason then
+            vim.lsp.enable(server)
           end
         end
+        return use_mason
       end
 
+      local install = vim.tbl_filter(configure, vim.tbl_keys(opts.servers))
       if have_mason then
-        mlsp.setup({
-          ensure_installed = vim.tbl_deep_extend(
-            'force',
-            ensure_installed,
-            Hvim.opts('mason-lspconfig.nvim').ensure_installed or {}
-          ),
-          handlers = { setup },
+        require("mason-lspconfig").setup({
+          ensure_installed = vim.list_extend(install, Hvim.opts("mason-lspconfig.nvim").ensure_installed or {}),
+          automatic_enable = { exclude = mason_exclude },
         })
       end
-
-      if Hvim.lsp.is_enabled('denols') and Hvim.lsp.is_enabled('tsls') then
-        local is_deno = require('lspconfig.util').root_pattern('deno.json', 'deno.jsonc')
-        Hvim.lsp.disable('ts_ls', is_deno)
-        Hvim.lsp.disable('denols', function(root_dir, config)
-          if not is_deno(root_dir) then
-            config.settings.deno.enable = false
-          end
-          return false
-        end)
-      end
-    end,
+    end),
   },
 
   {
     'mason-org/mason.nvim',
     enabled = not Hvim.is_mini() and not Hvim.is_vscode(),
     cmd = 'Mason',
-    keys = {},
+    keys = { { "<leader>cm", "<cmd>Mason<cr>", desc = "Mason" } },
     build = ':MasonUpdate',
     opts_extend = { 'ensure_installed' },
     opts = {
@@ -229,8 +241,4 @@ return {
       end)
     end,
   },
-
-  -- pin to v1 for now
-  { "mason-org/mason.nvim", version = "^1.0.0" },
-  { "mason-org/mason-lspconfig.nvim", version = "^1.0.0" },
 }
