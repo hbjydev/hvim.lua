@@ -24,6 +24,6 @@
   "oxocarbon.nvim": { "branch": "main", "commit": "9f85f6090322f39b11ae04a343d4eb9d12a86897" },
   "plenary.nvim": { "branch": "master", "commit": "b9fd5226c2f76c951fc8ed5923d85e4de065e509" },
   "roslyn.nvim": { "branch": "main", "commit": "7ba2dd0a5628c5ad3d8cc5a22e66ece3efc371bc" },
-  "snacks.nvim": { "branch": "main", "commit": "99077af3789b40400bd57656cee480e244b98bdc" },
+  "snacks.nvim": { "branch": "main", "commit": "39b5abfe59196ae29f0ba0e3837e4afa600f6240" },
   "telescope.nvim": { "branch": "master", "commit": "b4da76be54691e854d3e0e02c36b0245f945c2c7" }
 }
