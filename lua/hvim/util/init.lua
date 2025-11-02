@@ -42,6 +42,8 @@ function M.opts(name)
   return Plugin.values(plugin, 'opts', false)
 end
 
+local _defaults = {} ---@type table<string, boolean>
+
 function M.set_default(option, value)
   local l = vim.api.nvim_get_option_value(option, { scope = "local" })
   local g = vim.api.nvim_get_option_value(option, { scope = "global" })

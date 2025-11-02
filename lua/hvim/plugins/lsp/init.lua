@@ -109,14 +109,15 @@ return {
           ts_ls = {},
           vue_ls = {},
           yamlls = {},
+          roslyn_ls = {},
 
           omnisharp = {
-            cmd = {
-              vim.fn.executable("OmniSharp") and "OmniSharp" or "omnisharp",
-              "--languageserver",
-              "--hostPID",
-              tostring(vim.fn.getpid()),
-            },
+            -- cmd = {
+            --   vim.fn.executable("OmniSharp") and "OmniSharp" or "omnisharp",
+            --   "--languageserver",
+            --   "--hostPID",
+            --   tostring(vim.fn.getpid()),
+            -- },
             settings = {
               formatting_options = {
                 enable_editorconfig_support = true,
@@ -190,7 +191,7 @@ return {
         if setup and setup(server, opts) then
           mason_exclude[#mason_exclude + 1] = server
         else
-          vim.lsp.config(server, sops)
+          vim.lsp.config(server, sopts)
           if not use_mason then
             vim.lsp.enable(server)
           end
@@ -216,6 +217,10 @@ return {
     build = ':MasonUpdate',
     opts_extend = { 'ensure_installed' },
     opts = {
+      registries = {
+        'github:mason-org/mason-registry',
+        'github:Crashdummyy/mason-registry',
+      },
       ensure_installed = {
         'stylua',
         'shfmt',
@@ -241,4 +246,11 @@ return {
       end)
     end,
   },
+
+  {
+    "seblyng/roslyn.nvim",
+    ---@module 'roslyn.config'
+    ---@type RoslynNvimConfig
+    opts = {},
+  }
 }
