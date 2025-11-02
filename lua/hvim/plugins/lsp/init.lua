@@ -21,6 +21,14 @@ return {
             prefix = "icons"
           },
           severity_sort = true,
+          signs = {
+            text = {
+              [vim.diagnostic.severity.ERROR] = Hvim.icons.diagnostics.Error,
+              [vim.diagnostic.severity.WARN] = Hvim.icons.diagnostics.Warn,
+              [vim.diagnostic.severity.HINT] = Hvim.icons.diagnostics.Hint,
+              [vim.diagnostic.severity.INFO] = Hvim.icons.diagnostics.Info,
+            },
+          },
         },
 
         inlay_hints = {
@@ -110,6 +118,7 @@ return {
           vue_ls = {},
           yamlls = {},
           roslyn_ls = {},
+          intelephense = {},
 
           omnisharp = {
             -- cmd = {
@@ -162,6 +171,17 @@ return {
       end
 
       -- diagnostics
+      if type(opts.diagnostics.virtual_text) == "table" and opts.diagnostics.virtual_text.prefix == "icons" then
+        opts.diagnostics.virtual_text.prefix = function(diagnostic)
+          local icons = Hvim.icons.diagnostics
+          for d, icon in pairs(icons) do
+            if diagnostic.severity == vim.diagnostic.severity[d:upper()] then
+              return icon
+            end
+          end
+          return "●"
+        end
+      end
       vim.diagnostic.config(vim.deepcopy(opts.diagnostics))
 
       if opts.servers["*"] then
