@@ -110,7 +110,6 @@ return {
           html = {},
           jsonls = {},
           jsonnet_ls = {},
-          lua_ls = {},
           pyright = {},
           rust_analyzer = {},
           terraform_ls = {},
@@ -119,20 +118,6 @@ return {
           yamlls = {},
           roslyn_ls = {},
           intelephense = {},
-
-          omnisharp = {
-            -- cmd = {
-            --   vim.fn.executable("OmniSharp") and "OmniSharp" or "omnisharp",
-            --   "--languageserver",
-            --   "--hostPID",
-            --   tostring(vim.fn.getpid()),
-            -- },
-            settings = {
-              formatting_options = {
-                enable_editorconfig_support = true,
-              }
-            }
-          },
         },
 
         setup = {},
@@ -150,7 +135,7 @@ return {
 
       -- inlay hints
       if opts.inlay_hints.enabled then
-        Hvim.lsp.on_supports_method('textDocument/inlayHint', function(client, buffer)
+        Hvim.lsp.on_supports_method('textDocument/inlayHint', function(_, buffer)
           if
             vim.api.nvim_buf_is_valid(buffer)
             and vim.bo[buffer].buftype == ''
