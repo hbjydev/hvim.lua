@@ -117,7 +117,11 @@ return {
           vue_ls = {},
           yamlls = {},
           roslyn_ls = {},
-          intelephense = {},
+          intelephense = {
+            init_options = {
+              licenceKey = vim.fn.expand("$HOME/.config/nvim/intelephense.key"),
+            },
+          },
         },
 
         setup = {},
