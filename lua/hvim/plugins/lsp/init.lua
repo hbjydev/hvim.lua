@@ -59,15 +59,16 @@ return {
             keys = {
               -- Diagnostics
               { '<leader>do', vim.diagnostic.open_float, desc = 'Show diagnostics' },
-              { '[d', vim.diagnostic.goto_prev, desc = 'Previous diagnostic' },
-              { ']d', vim.diagnostic.goto_next, desc = 'Next diagnostic' },
+              { '[d', vim.diagnostic.jump({ count = -1, float = true }), desc = 'Previous diagnostic' },
+              { ']d', vim.diagnostic.jump({ count = 1, float = true }), desc = 'Next diagnostic' },
 
               -- LSP Buffer
               { '<leader>cl', function() Snacks.picker.lsp_config() end, desc = "LSP Info" },
-              { 'gd', vim.lsp.buf.definition, desc = "Go to [d]efinition", has = "definition" },
-              { 'gr', vim.lsp.buf.references, desc = "References", nowait = true },
-              { 'gt', vim.lsp.buf.type_definition, desc = "Go to [t]ype definition" },
-              { 'gD', vim.lsp.buf.declaration, desc = "Go to type [D]eclaration" },
+              { 'gd', function() Snacks.picker.lsp_definitions() end, desc = "Go to [d]efinition", has = "definition" },
+              { 'gr', function() Snacks.picker.lsp_references() end, desc = "References", nowait = true },
+              { 'gt', function() Snacks.picker.lsp_type_definitions() end, desc = "Go to [t]ype definition" },
+              { 'gD', function() Snacks.picker.lsp_declarations() end, desc = "Go to type [D]eclaration" },
+              { 'gI', function() Snacks.picker.lsp_implementations() end, desc = "Go to type [I]mplementations" },
               { 'K', function() return vim.lsp.buf.hover() end, desc = 'Open hover dialog' },
               { 'gK', function() return vim.lsp.buf.signature_help() end, desc = 'Signature help', has = 'signatureHelp' },
               { '<c-k>', function() return vim.lsp.buf.signature_help() end, mode = 'i', desc = 'Signature help', has = 'signatureHelp' },
