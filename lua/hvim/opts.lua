@@ -7,6 +7,7 @@ opt.colorcolumn = '80'
 opt.completeopt = 'menu,menuone,noselect'
 opt.cursorline = true
 opt.expandtab = true
+opt.exrc = true
 opt.foldcolumn = '0'
 opt.foldenable = true
 opt.foldlevel = 99
