@@ -113,6 +113,7 @@ return {
           jsonnet_ls = {},
           pyright = {},
           rust_analyzer = {},
+          sourcekit = {},
           terraform_ls = {},
           ts_ls = {},
           vue_ls = {},
