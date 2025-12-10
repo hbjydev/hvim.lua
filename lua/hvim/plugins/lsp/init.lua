@@ -113,7 +113,15 @@ return {
           jsonnet_ls = {},
           pyright = {},
           rust_analyzer = {},
-          sourcekit = {},
+          sourcekit = {
+            capabilities = {
+              workspace = {
+                didChangeWatchedFiles = {
+                  dynamicRegistration = true,
+                },
+              },
+            },
+          },
           terraform_ls = {},
           ts_ls = {},
           vue_ls = {},
