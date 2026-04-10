@@ -44,11 +44,12 @@ return {
         sources = {
           files = {
             cmd = "rg",
-            args = { "--hidden", "--glob", "!.git" }
+            args = { "--hidden", "--glob", "!.git", "-uu" }
           },
 
           explorer = {
             auto_close = true,
+            include = { ".env", ".env.*" },
             layout = {
               preset = "default",
               layout = {
