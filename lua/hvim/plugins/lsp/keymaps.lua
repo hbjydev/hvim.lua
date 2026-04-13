@@ -20,7 +20,9 @@ function M.set(filter, spec)
       local opts = Keys.opts(keys)
       opts.lsp = f
       opts.enabled = keys.enabled
-      Snacks.keymap.set(keys.mode or "n", keys.lhs, keys.rhs, opts)
+      if keys.rhs then
+        Snacks.keymap.set(keys.mode or "n", keys.lhs, keys.rhs, opts)
+      end
     end
   end
 end

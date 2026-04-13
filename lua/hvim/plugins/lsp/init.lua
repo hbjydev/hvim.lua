@@ -58,9 +58,9 @@ return {
 
             keys = {
               -- Diagnostics
-              { '<leader>do', vim.diagnostic.open_float, desc = 'Show diagnostics' },
-              { '[d', vim.diagnostic.jump({ count = -1, float = true }), desc = 'Previous diagnostic' },
-              { ']d', vim.diagnostic.jump({ count = 1, float = true }), desc = 'Next diagnostic' },
+              { '<leader>do', function() vim.diagnostic.open_float() end, desc = 'Show diagnostics' },
+              { '[d', function() vim.diagnostic.jump({ count = -1, float = true }) end, desc = 'Previous diagnostic' },
+              { ']d', function() vim.diagnostic.jump({ count = 1, float = true }) end, desc = 'Next diagnostic' },
 
               -- LSP Buffer
               { '<leader>cl', function() Snacks.picker.lsp_config() end, desc = "LSP Info" },
