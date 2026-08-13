@@ -122,7 +122,7 @@ return {
               },
             },
           },
-          terraform_ls = {},
+          terraformls = {},
           ts_ls = {},
           vue_ls = {},
           yamlls = {},

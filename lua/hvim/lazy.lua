@@ -17,6 +17,7 @@ vim.opt.rtp:prepend(lazypath)
 
 _G.Hvim = require('hvim.util')
 Hvim.plugin.setup()
+Hvim.lsp.setup()
 
 require('lazy').setup({
   spec = { { import = 'hvim.plugins' } },
